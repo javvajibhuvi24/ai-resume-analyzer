@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 import streamlit as st
 from utils.text_extractor import extract_text
 from utils.preprocess import clean_text
