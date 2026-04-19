@@ -1,7 +1,12 @@
+st.markdown("""
+# 📄 AI Resume Analyzer  
+### Improve your resume using AI 🚀
+""")
+
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.dirname(__file__))) 
 
 import streamlit as st
 from utils.text_extractor import extract_text
@@ -52,15 +57,36 @@ if st.button("Analyze Resume"):
 
         col3, col4 = st.columns(2)
 
+        # with col3:
+        #     st.metric("Keyword Match Score", f"{score:.2f}%")
+
+        # with col4:
+        #     st.metric("Semantic Similarity", f"{similarity:.2f}%")
+
         with col3:
             st.metric("Keyword Match Score", f"{score:.2f}%")
+            st.progress(int(score))
 
         with col4:
             st.metric("Semantic Similarity", f"{similarity:.2f}%")
+            st.progress(int(similarity))
 
+        st.subheader("💡 Insights")
+
+        if score > 70:
+            st.success("Your resume is well aligned with the job description!")
+        elif score > 40:
+            st.warning("Your resume is moderately aligned. Consider improving missing skills.")
+        else:
+            st.error("Your resume needs improvement. Add more relevant keywords.")    
         # Missing Keywords
         st.subheader("❌ Missing Keywords")
-        st.write(list(missing_keywords)[:20])
+        # st.write(list(missing_keywords)[:20])
 
+        if missing_keywords:
+            for word in list(missing_keywords)[:20]:
+                st.markdown(f"- 🔴 {word}")
+        else:
+            st.success("No major keywords missing 🎉")
     else:
         st.error("Please upload resume and paste job description")
